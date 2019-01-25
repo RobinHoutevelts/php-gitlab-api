@@ -110,6 +110,18 @@ class Issues extends AbstractApi
     }
 
     /**
+     * @param $project_id
+     * @param $issue_iid
+     * @return mixed
+     */
+    public function resourceLabelEvents($project_id, $issue_iid)
+    {
+        return $this->get(
+            $this->getProjectPath($project_id, 'issues/' . $this->encodePath($issue_iid)) . '/resource_label_events'
+        );
+    }
+
+    /**
      * @param int $project_id
      * @param int $issue_iid
      * @param int $note_id
