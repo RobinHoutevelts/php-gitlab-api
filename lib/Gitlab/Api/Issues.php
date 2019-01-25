@@ -94,11 +94,19 @@ class Issues extends AbstractApi
     /**
      * @param int $project_id
      * @param int $issue_iid
+     * @param array $parameters
      * @return mixed
      */
-    public function showComments($project_id, $issue_iid)
+    public function showComments($project_id, $issue_iid, array $parameters = [])
     {
-        return $this->get($this->getProjectPath($project_id, 'issues/'.$this->encodePath($issue_iid)).'/notes');
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefined('sort')
+            ->setAllowedValues('sort', ['asc', 'desc']);
+
+        return $this->get(
+            $this->getProjectPath($project_id, 'issues/' . $this->encodePath($issue_iid)) . '/notes',
+            $resolver->resolve($parameters)
+        );
     }
 
     /**
