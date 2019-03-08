@@ -155,6 +155,15 @@ class Projects extends AbstractApi
     }
 
     /**
+     * @param int $project_id
+     * @return mixed
+     */
+    public function environments($project_id)
+    {
+        return $this->get("projects/".$this->encodePath($project_id)."/environments");
+    }
+
+    /**
      * @param int   $project_id
      * @param array $parameters (
      *
