@@ -1,10 +1,10 @@
-<?php namespace Gitlab\Exception;
+<?php
+
+namespace Gitlab\Exception;
 
 /**
- * ErrorException
- *
- * @author Joseph Bielawski <stloyd@gmail.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
-class ErrorException extends \ErrorException
+class ErrorException extends \ErrorException implements ExceptionInterface
 {
 }

@@ -1,1 +1,13 @@
-preset: psr2
+preset: symfony
+
+enabled:
+  - align_phpdoc
+  - alpha_ordered_imports
+  - array_indentation
+
+disabled:
+  - no_superfluous_phpdoc_tags_symfony
+  - phpdoc_align
+  - phpdoc_property
+  - phpdoc_to_comment
+  - phpdoc_var_without_name

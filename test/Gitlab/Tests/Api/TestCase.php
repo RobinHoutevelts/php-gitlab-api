@@ -1,15 +1,17 @@
-<?php namespace Gitlab\Tests\Api;
+<?php
+
+namespace Gitlab\Tests\Api;
 
 use Gitlab\Client;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * @return string
      */
     abstract protected function getApiClass();
-
 
     /**
      * @param array $methods
@@ -19,7 +21,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected function getApiMock(array $methods = [])
     {
         $httpClient = $this->getMockBuilder(HttpClient::class)
-            ->setMethods(array('sendRequest'))
+            ->setMethods(['sendRequest'])
             ->getMock();
         $httpClient
             ->expects($this->any())
@@ -28,8 +30,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $client = Client::createWithHttpClient($httpClient);
 
         return $this->getMockBuilder($this->getApiClass())
-            ->setMethods(array_merge(array('getAsResponse', 'get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'), $methods))
-            ->setConstructorArgs(array($client))
+            ->setMethods(array_merge(['getAsResponse', 'get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'], $methods))
+            ->setConstructorArgs([$client])
             ->getMock();
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
+namespace Gitlab\Tests\HttpClient\Util;
 
-namespace Gitlab\Tests\HttpClient\Message;
+use Gitlab\HttpClient\Util\QueryStringBuilder;
+use PHPUnit\Framework\TestCase;
 
-use Gitlab\HttpClient\Message\QueryStringBuilder;
-
-class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
+class QueryStringBuilderTest extends TestCase
 {
     /**
      * @dataProvider queryStringProvider
@@ -15,7 +15,7 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild($query, $expected)
     {
-        $this->assertEquals($expected, QueryStringBuilder::build($query));
+        $this->assertSame($expected, QueryStringBuilder::build($query));
     }
 
     public function queryStringProvider()
@@ -37,13 +37,22 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
         yield [
             ['iids' => [0 => 88, 2 => 86]],
             //iids[0]=88&iids[2]=86
-            'iids%5B0%5D=88&iids%5B2%5D=86'
+            'iids%5B0%5D=88&iids%5B2%5D=86',
+        ];
+
+        yield [
+            [
+                'source_branch' => 'test_source',
+                'target_branch' => 'test_master',
+                'title' => 'test',
+            ],
+            'source_branch=test_source&target_branch=test_master&title=test',
         ];
 
         //Boolean encoding
         yield [
             ['push_events' => false, 'merge_requests_events' => 1],
-            'push_events=0&merge_requests_events=1'
+            'push_events=0&merge_requests_events=1',
         ];
 
         //A deeply nested array.
@@ -88,8 +97,7 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
             '&assoc%5Ba%5D=b&assoc%5Bc%5D%5Bd%5D=e&assoc%5Bc%5D%5Bf%5D=g'.
             '&nested%5Ba%5D%5B%5D%5Bb%5D=c&nested%5Ba%5D%5B%5D%5Bd%5D=e'.
             '&nested%5Ba%5D%5B%5D%5Bf%5D%5Bg%5D=h&nested%5Ba%5D%5B%5D%5Bf%5D%5Bi%5D=j'.
-            '&nested%5Ba%5D%5B%5D%5Bf%5D%5Bk%5D%5B%5D=87&nested%5Ba%5D%5B%5D%5Bf%5D%5Bk%5D%5B%5D=89'
-            ,
+            '&nested%5Ba%5D%5B%5D%5Bf%5D%5Bk%5D%5B%5D=87&nested%5Ba%5D%5B%5D%5Bf%5D%5Bk%5D%5B%5D=89',
         ];
     }
 }

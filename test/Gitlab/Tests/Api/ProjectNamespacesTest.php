@@ -1,6 +1,6 @@
-<?php namespace Gitlab\Tests\Api;
+<?php
 
-use Gitlab\Api\AbstractApi;
+namespace Gitlab\Tests\Api;
 
 class ProjectNamespacesTest extends TestCase
 {
@@ -9,19 +9,36 @@ class ProjectNamespacesTest extends TestCase
      */
     public function shouldGetAllNamespaces()
     {
-        $expectedArray = array(
-            array('id' => 1, 'name' => 'bespokes'),
-            array('id' => 2, 'name' => 'internal')
-        );
+        $expectedArray = [
+            ['id' => 1, 'name' => 'bespokes'],
+            ['id' => 2, 'name' => 'internal'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
             ->method('get')
-            ->with('namespaces', array())
+            ->with('namespaces', [])
             ->will($this->returnValue($expectedArray))
         ;
 
         $this->assertEquals($expectedArray, $api->all());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldShowNamespace()
+    {
+        $expectedArray = ['id' => 1, 'name' => 'internal'];
+
+        $api = $this->getApiMock();
+        $api->expects($this->once())
+            ->method('get')
+            ->with('namespaces/1')
+            ->will($this->returnValue($expectedArray))
+        ;
+
+        $this->assertEquals($expectedArray, $api->show(1));
     }
 
     protected function getApiClass()
