@@ -109,13 +109,37 @@ class Issues extends AbstractApi
 
     /**
      * @param int|string $project_id
-     * @param int        $issue_iid
+     * @param int $issue_iid
      *
      * @return mixed
      */
-    public function showNotes($project_id, $issue_iid)
+    public function resourceLabelEvents($project_id, $issue_iid)
     {
-        return $this->get($this->getProjectPath($project_id, 'issues/'.$this->encodePath($issue_iid).'/notes'));
+        return $this->get(
+            $this->getProjectPath($project_id, 'issues/' . $this->encodePath($issue_iid)) . '/resource_label_events'
+        );
+    }
+
+    /**
+     * @param int|string $project_id
+     * @param int        $issue_iid
+     * @param array      $parameters {
+     *
+     *     @var string $sort                 The sort direction ( asc|desc )
+     * }
+     *
+     * @return mixed
+     */
+    public function showNotes($project_id, $issue_iid, array $parameters = [])
+    {
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefined('sort')
+            ->setAllowedValues('sort', ['asc', 'desc']);
+
+        return $this->get(
+            $this->getProjectPath($project_id, 'issues/' . $this->encodePath($issue_iid)) . '/notes',
+            $resolver->resolve($parameters)
+        );
     }
 
     /**
